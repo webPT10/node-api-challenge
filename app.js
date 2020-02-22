@@ -7,8 +7,8 @@ const projectRouter = require("./Routers/projectRouter");
 
 app.use(express.json());
 
-app.use("/api", actionRouter);
-app.use("api/", projectRouter);
+// app.use("/api", actionRouter);
+app.use("/api", projectRouter);
 
 app.get("/", (req, res) => {
   res.send(`<h2>Hey-o, Lambda! Working API!<h2>`);
