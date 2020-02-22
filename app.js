@@ -7,7 +7,7 @@ const projectRouter = require("./Routers/projectRouter");
 
 app.use(express.json());
 
-// app.use("/api", actionRouter);
+app.use("/api", actionRouter);
 app.use("/api", projectRouter);
 
 app.get("/", (req, res) => {
