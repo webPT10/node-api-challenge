@@ -33,7 +33,7 @@ router.get("/projects/", (req, res) => {
 });
 
 // GET > Returns the post object with the specified id.
-router.get("/projects/:id", (req, res) => {
+router.get("/projects/:id", validateProjectId, (req, res) => {
   const { id } = req.params;
   dbProject
     .get(id)
@@ -48,20 +48,21 @@ router.get("/projects/:id", (req, res) => {
     });
 });
 
-router.get("/projects:id/actions", (req, res) => {
-    const { id } = req.params;
+router.get("/projects:id/actions", validateProjectId, (req, res) => {
+  const { id } = req.params;
 
-    dbProject.getProjectActions(id)
-        .then(project => {
-            res.status(200).json({project})
-        })
-        .catch(error => {
-            res.status(500).json({error: `Coud not retrieve project at id ${id}.` })
-        })
-})
+  dbProject
+    .getProjectActions(id)
+    .then(project => {
+      res.status(200).json({ project });
+    })
+    .catch(error => {
+      res.status(500).json({ error: `Coud not retrieve project at id ${id}.` });
+    });
+});
 
 // PUT > Updates the project with the specified id using data from the request body. Returns the modified document, NOT the original.
-router.put("/projects/:id", (req, res) => {
+router.put("/projects/:id", validateProjectId, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
@@ -79,7 +80,7 @@ router.put("/projects/:id", (req, res) => {
 });
 
 // DELETE > Removes the post with the specified id and returns the deleted post object.
-router.delete("/projects/:id", (req, res) => {
+router.delete("/projects/:id", validateProjectId, (req, res) => {
   const { id } = req.params;
 
   dbProject
@@ -103,16 +104,17 @@ router.delete("/projects/:id", (req, res) => {
 
 // Custom Middleware
 function validateProjectId(req, res, next) {
-    const { id } = req.params;
-  
-    dbProject.get(id)
-      .then(project => {
-        req.project = project;
-        next();
-      })
-      .catch(error => {
-        res.status(400).json({ message: "Invalid project id." });
-      });
-  }
+  const { id } = req.params;
+
+  dbProject
+    .get(id)
+    .then(project => {
+      req.project = project;
+      next();
+    })
+    .catch(error => {
+      res.status(400).json({ message: "Invalid project id." });
+    });
+}
 
 module.exports = router;
