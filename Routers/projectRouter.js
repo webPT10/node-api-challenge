@@ -20,45 +20,50 @@ router.post("/projects", (req, res) => {
 });
 
 // GET > Returns an array of all the project objects contained in the database.
-router.get("/projects/", (req, res) => {
-  dbProject
-    .get()
-    .then(project => {
-      res.status(200).json(project);
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(404).json({ error: "Could not retrieve projects" });
-    });
+router.get("/projects/", async, (req, res) => {
+    try{
+        const data = dbProject.get()
+        res.status(200).json(data);
+    } catch(error){
+        next(error)
+    };
 });
 
 // GET > Returns the post object with the specified id.
-router.get("/projects/:id", validateProjectId, (req, res) => {
-  const { id } = req.params;
-  dbProject
-    .get(id)
-    .then(project => {
-      res.status(200).json(project);
-    })
-    .catch(error => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ error: `Could not retrieve project at id ${id}.` });
-    });
-});
+// router.get("/projects/:id", validateProjectId, (req, res) => {
+//   const { id } = req.params;
+//   dbProject
+//     .get(id)
+//     .then(project => {
+//       res.status(200).json(project);
+//     })
+//     .catch(error => {
+//       console.log(error);
+//       res
+//         .status(500)
+//         .json({ error: `Could not retrieve project at id ${id}.` });
+//     });
+// });
 
-router.get("/projects:id/actions", validateProjectId, (req, res) => {
+router.get("/projects/:id", async, validateProjectId, (req, res) => {
+    const { id } = req.params;
+        try {
+            const data = await dbProject.get(id)
+            res.status(200).json(data);
+        } catch(error){
+            next(err)
+        }    
+  });
+
+router.get("/projects:id/actions", async, validateProjectId, (req, res) => {
   const { id } = req.params;
 
-  dbProject
-    .getProjectActions(id)
-    .then(project => {
-      res.status(200).json({ project });
-    })
-    .catch(error => {
-      res.status(500).json({ error: `Coud not retrieve project at id ${id}.` });
-    });
+  try {
+      const data = dbProject.getProjectActions(id)
+      res.status(200).json({ data });
+  } catch(error){
+      next(error)
+  }
 });
 
 // PUT > Updates the project with the specified id using data from the request body. Returns the modified document, NOT the original.
