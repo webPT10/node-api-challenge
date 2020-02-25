@@ -39,14 +39,26 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
 
 - [ ] Mention two parts of Express that you learned about this week.
+*Routing > which is a way to select which request handler function is executed based on URL visited & HTTP method used. Helps to break app into small parts
+
+*Convenience Helpers > provide out of the box functionality to make writing web apps & API servers easier. Most are extension methods added to Request / Response objects >> response.status(), response.send()
+
 
 - [ ] Describe Middleware?
 
+Middleware (MW) provides a way to extend features through Express. MW is an array of functions executed in the order they are introduced to handle one aspect of an app > i.e. authentication and logging on. Four different types: built-in, 3rd party, Custom, Error
+
 - [ ] Describe a Resource?
+
+Everything in a RESTful web api is a Resource. Each Resource (should) work off a single URL via a stateless protocol (HTTP) and execute different code based on the HTTP method/verb used. 
 
 - [ ] What can the API return to help clients know if a request was successful?
 
+response.status(200).json() >> 200 JSON message, indicates that the api successfully carried out the requested action
+
 - [ ] How can we partition our application into sub-applications?
+
+Use Express routers to make code easy to understand, more modular and re-usable in separate parts. 
 
 ## Minimum Viable Product
 
