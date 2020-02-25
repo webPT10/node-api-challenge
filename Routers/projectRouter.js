@@ -4,6 +4,7 @@ const dbProject = require("../data/helpers/projectModel");
 const router = express.Router();
 router.use(express.json());
 
+
 // POST > Creates a project using the information sent inside the request Body
 router.post("/projects", (req, res) => {
   const body = req.body;
@@ -22,7 +23,7 @@ router.post("/projects", (req, res) => {
 // GET > Returns an array of all the project objects contained in the database.
 router.get("/projects/", async, (req, res) => {
     try{
-        const data = dbProject.get()
+        const data = await dbProject.get()
         res.status(200).json(data);
     } catch(error){
         next(error)
@@ -59,7 +60,7 @@ router.get("/projects:id/actions", async, validateProjectId, (req, res) => {
   const { id } = req.params;
 
   try {
-      const data = dbProject.getProjectActions(id)
+      const data = await dbProject.getProjectActions(id)
       res.status(200).json({ data });
   } catch(error){
       next(error)
